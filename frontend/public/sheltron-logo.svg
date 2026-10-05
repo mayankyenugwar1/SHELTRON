@@ -1,0 +1,67 @@
+<svg width="220" height="52" viewBox="0 0 220 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="sunGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#F7C84C" />
+      <stop offset="100%" stop-color="#E5A832" />
+    </radialGradient>
+    <linearGradient id="leafGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#48915E" />
+      <stop offset="100%" stop-color="#1E5433" />
+    </linearGradient>
+    <filter id="pillShadow" x="0" y="0" width="220" height="52" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#14321E" flood-opacity="0.08" />
+    </filter>
+  </defs>
+
+  <!-- Capsule Pill Container -->
+  <rect x="2" y="2" width="216" height="46" rx="23" fill="#F7FAF4" stroke="#D0E3CB" stroke-width="1.2" filter="url(#pillShadow)" />
+
+  <!-- Emblem (House + Leaf + Sun) -->
+  <g transform="translate(14, 5)">
+    <!-- Golden Sun -->
+    <circle cx="28" cy="10.5" r="5" fill="url(#sunGlow)" />
+    <circle cx="28" cy="10.5" r="6.5" stroke="#F5C242" stroke-width="0.6" stroke-dasharray="1.2 1.8" opacity="0.6" />
+
+    <!-- Background Foliage -->
+    <path d="M 7 22 C 6 14, 13 8, 20 7 C 17 12, 16 17, 19 22 Z" fill="#5C936B" opacity="0.85" />
+
+    <!-- Modern House Roof -->
+    <path d="M 8 17.5 L 22 9 L 34 14.5 L 32.5 17.5 L 22 11.5 L 10 19 Z" fill="#0D3824" />
+    <path d="M 10 17.5 L 22 10 L 33 15" stroke="#6FA87E" stroke-width="1.2" stroke-linecap="round" />
+
+    <!-- House Walls -->
+    <path d="M 13 18 L 22 13 L 22 30 L 13 30 Z" fill="#14422B" />
+    <path d="M 22 13 L 31 16.5 L 31 30 L 22 30 Z" fill="#0B2C1C" />
+
+    <!-- Windows & Doors -->
+    <rect x="15.5" y="21" width="4.2" height="9" rx="0.5" fill="#EEF5EB" />
+    <line x1="17.6" y1="21" x2="17.6" y2="30" stroke="#14422B" stroke-width="0.6" />
+    <rect x="25" y="19.5" width="4" height="6" rx="0.5" fill="#EEF5EB" />
+
+    <!-- Flowing Leaves -->
+    <path d="M 2 32 C 6 36, 16 37, 24 33 C 16 34, 8 33, 4 29 C 1 25, 2 18, 3 13 C 4 19, 8 24, 13 26 C 18 28, 25 28, 32 25 C 22 30, 11 33, 2 32 Z" fill="#1B4D2E" />
+    <path d="M 3 31 C 7 34, 15 35, 22 30 C 15 31, 9 30, 5 27 C 3 23, 3 17, 4 13 C 5 19, 8 23, 12 25 C 16 26, 23 26, 29 24 C 21 28, 11 30, 3 31 Z" fill="url(#leafGrad)" />
+    <path d="M 3 31 Q 13 32 22 28" stroke="#99D1A6" stroke-width="0.8" stroke-linecap="round" fill="none" />
+  </g>
+
+  <!-- Typography "SHELTRON" -->
+  <g transform="translate(62, 32)">
+    <text font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="20" font-weight="900" fill="#0D3824" letter-spacing="-0.5">
+      SHELT<tspan dx="0.5">R</tspan>
+    </text>
+
+    <!-- Embedded "O" with Leaf inside -->
+    <g transform="translate(86, -15)">
+      <circle cx="9" cy="9" r="8" fill="#0D3824" />
+      <circle cx="9" cy="9" r="4.3" fill="#F7FAF4" />
+      <!-- Leaf in O -->
+      <path d="M 6.8 12.2 C 6.3 10.1, 7.8 7, 11.5 5.8 C 11 7.9, 9.5 11, 6.8 12.2 Z" fill="#2D7A4C" />
+      <path d="M 7.2 11.8 Q 9 9.5 11 6.3" stroke="#8BC49F" stroke-width="0.7" stroke-linecap="round" />
+    </g>
+
+    <!-- "N" -->
+    <text x="107" y="0" font-family="system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="20" font-weight="900" fill="#0D3824" letter-spacing="-0.5">
+      N
+    </text>
+  </g>
+</svg>

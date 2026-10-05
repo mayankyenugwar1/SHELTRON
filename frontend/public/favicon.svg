@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <radialGradient id="sunGlow" cx="44" cy="18" r="9" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#F9D463" />
+      <stop offset="100%" stop-color="#E5A832" />
+    </radialGradient>
+    <linearGradient id="leafGrad" x1="8" y1="52" x2="48" y2="38" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#48915E" />
+      <stop offset="100%" stop-color="#1E5433" />
+    </linearGradient>
+    <filter id="softShadow" x="0" y="0" width="64" height="64" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="1" stdDeviation="1.5" flood-color="#10301A" flood-opacity="0.12" />
+    </filter>
+  </defs>
+
+  <!-- Circular Badge Surface (High visibility on both light & dark browser tab chrome) -->
+  <circle cx="32" cy="32" r="30" fill="#F7FAF4" stroke="#CCE0C6" stroke-width="1.8" filter="url(#softShadow)" />
+
+  <!-- 1. Warm Golden Sun behind the roof -->
+  <circle cx="44" cy="18" r="8" fill="url(#sunGlow)" />
+  <circle cx="44" cy="18" r="10" stroke="#F5C242" stroke-width="0.8" stroke-dasharray="1.8 2.2" opacity="0.65" />
+
+  <!-- 2. Background Biophilic Canopy / Soft Leaf Accent -->
+  <path d="M 12 34 C 10 21, 20 13, 31 11 C 27 18, 25 26, 30 33 Z" fill="#5C936B" opacity="0.85" />
+
+  <!-- 3. Modern Bioclimatic Shelter -->
+  <!-- Overhanging Sloped Roof -->
+  <path d="M 13 27 L 34 14 L 52 23 L 50 27 L 34 18 L 16 30 Z" fill="#0D3824" />
+  <!-- Overhang Highlight Line -->
+  <path d="M 16 27 L 34 16 L 51 23.5" stroke="#72AC82" stroke-width="1.6" stroke-linecap="round" />
+
+  <!-- Front Facade Wall -->
+  <path d="M 20 28 L 34 20 L 34 46 L 20 46 Z" fill="#14422B" />
+  <!-- Dimensional Side Depth Facet -->
+  <path d="M 34 20 L 48 26 L 48 46 L 34 46 Z" fill="#0B2C1C" />
+
+  <!-- Clean Fenestration / Door & Window -->
+  <rect x="24" y="32" width="6.5" height="14" rx="0.8" fill="#EEF5EB" />
+  <line x1="27.2" y1="32" x2="27.2" y2="46" stroke="#14422B" stroke-width="0.8" />
+  <rect x="38" y="30" width="6" height="9" rx="0.8" fill="#EEF5EB" />
+  <line x1="38" y1="34.5" x2="44" y2="34.5" stroke="#0B2C1C" stroke-width="0.7" />
+
+  <!-- 4. Flowing Green Leaves around & under the house -->
+  <!-- Base Foundation Leaf -->
+  <path d="M 5 48 C 11 54, 25 56, 38 50 C 26 51, 13 50, 7 43 C 3 37, 4 28, 6 19 C 7 29, 13 37, 21 40 C 28 43, 39 43, 49 39 C 34 46, 18 50, 5 48 Z" fill="#1B4D2E" />
+  <!-- Upper Vibrant Sage Leaf -->
+  <path d="M 6 47 C 12 51, 24 53, 35 46 C 24 47, 14 46, 9 40 C 6 35, 6 27, 7 21 C 9 29, 13 36, 20 39 C 25 41, 35 41, 45 37 C 32 43, 19 46, 6 47 Z" fill="url(#leafGrad)" />
+  <!-- Leaf Center Vein -->
+  <path d="M 7 47 Q 21 49 35 43" stroke="#99D1A6" stroke-width="1.2" stroke-linecap="round" fill="none" />
+</svg>

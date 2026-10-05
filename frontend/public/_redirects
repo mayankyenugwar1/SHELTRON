@@ -1,0 +1,3 @@
+# Netlify Single Page Application (SPA) redirect rule
+# Ensures client-side routing works for all paths (/app, /app/climate, etc.) on refresh
+/*    /index.html   200
