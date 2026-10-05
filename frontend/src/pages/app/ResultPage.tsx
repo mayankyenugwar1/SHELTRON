@@ -708,7 +708,7 @@ export const ResultPage: React.FC = () => {
             variant="outline"
             onClick={() => navigate('/app/create')}
             icon="🌱"
-            className="text-white border-[#2e7d58] bg-[#1a4a34] hover:bg-[#236848] font-bold cursor-pointer"
+            className="bg-[#fffdf7] text-[#123b2a] hover:text-[#087443] border border-[#2e7d58] hover:border-[#087443] hover:bg-[#eaf6e8] font-bold cursor-pointer shadow-xs"
           >
             Start New Shelter
           </Button>
