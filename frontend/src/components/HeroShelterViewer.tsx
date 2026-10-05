@@ -256,19 +256,59 @@ function BioclimaticVilla({ showLabels }: { showLabels: boolean }) {
             <meshStandardMaterial color="#5C3B1E" roughness={0.7} />
           </mesh>
         ))}
+        {/* Secondary Roof Radiant Sub-Deck */}
+        <mesh position={[0, 0.32, 1.15]} rotation={[0.22, 0, 0]}>
+          <boxGeometry args={[5.9, 0.03, 2.36]} />
+          <meshStandardMaterial color="#94A3B8" metalness={0.75} roughness={0.3} />
+        </mesh>
+        <mesh position={[0, 0.32, -1.15]} rotation={[-0.22, 0, 0]}>
+          <boxGeometry args={[5.9, 0.03, 2.36]} />
+          <meshStandardMaterial color="#94A3B8" metalness={0.75} roughness={0.3} />
+        </mesh>
+
+        {/* Counter-Battens Creating Ventilated Air Gap */}
+        {[-2.2, -1.1, 0, 1.1, 2.2].map((x, i) => (
+          <React.Fragment key={`hero-batten-${i}`}>
+            <mesh position={[x, 0.355, 1.15]} rotation={[0.22, 0, 0]}>
+              <boxGeometry args={[0.04, 0.04, 2.36]} />
+              <meshStandardMaterial color="#4A3525" roughness={0.7} />
+            </mesh>
+            <mesh position={[x, 0.355, -1.15]} rotation={[-0.22, 0, 0]}>
+              <boxGeometry args={[0.04, 0.04, 2.36]} />
+              <meshStandardMaterial color="#4A3525" roughness={0.7} />
+            </mesh>
+          </React.Fragment>
+        ))}
+
+        {/* Primary Exterior Terracotta Roof Plane */}
         {/* South Roof Plane (Slopes DOWN from ridge to south eaves) */}
-        <mesh position={[0, 0.4, 1.15]} rotation={[0.22, 0, 0]} castShadow receiveShadow>
-          <boxGeometry args={[6.2, 0.12, 2.5]} />
+        <mesh position={[0, 0.41, 1.15]} rotation={[0.22, 0, 0]} castShadow receiveShadow>
+          <boxGeometry args={[6.0, 0.07, 2.42]} />
           <meshStandardMaterial color="#C85A32" roughness={0.55} />
         </mesh>
         {/* North Roof Plane (Slopes DOWN from ridge to north eaves) */}
-        <mesh position={[0, 0.4, -1.15]} rotation={[-0.22, 0, 0]} castShadow receiveShadow>
-          <boxGeometry args={[6.2, 0.12, 2.5]} />
+        <mesh position={[0, 0.41, -1.15]} rotation={[-0.22, 0, 0]} castShadow receiveShadow>
+          <boxGeometry args={[6.0, 0.07, 2.42]} />
           <meshStandardMaterial color="#C85A32" roughness={0.55} />
         </mesh>
+
+        {/* Eaves Fascia Trim */}
+        <mesh position={[0, 0.16, 2.32]} rotation={[0.22, 0, 0]}>
+          <boxGeometry args={[6.0, 0.06, 0.03]} />
+          <meshStandardMaterial color="#78350F" roughness={0.65} />
+        </mesh>
+        <mesh position={[0, 0.16, -2.32]} rotation={[-0.22, 0, 0]}>
+          <boxGeometry args={[6.0, 0.06, 0.03]} />
+          <meshStandardMaterial color="#78350F" roughness={0.65} />
+        </mesh>
+
         {/* Continuous Ridge Aerodynamic Ventilator */}
-        <mesh position={[0, 0.68, 0]} castShadow>
-          <boxGeometry args={[6.24, 0.08, 0.38]} />
+        <mesh position={[0, 0.66, 0]}>
+          <boxGeometry args={[6.0, 0.03, 0.28]} />
+          <meshStandardMaterial color="#0F172A" roughness={0.9} />
+        </mesh>
+        <mesh position={[0, 0.70, 0]} castShadow>
+          <boxGeometry args={[6.04, 0.07, 0.36]} />
           <meshStandardMaterial color="#334155" roughness={0.5} />
         </mesh>
       </group>

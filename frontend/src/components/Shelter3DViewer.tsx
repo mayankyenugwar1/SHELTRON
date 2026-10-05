@@ -100,9 +100,11 @@ function ShelterStructure({
   // Triangular gable pediment matching roof pitch (no corner protrusion)
   const gableShape = React.useMemo(() => {
     const shape = new THREE.Shape();
-    shape.moveTo(-1.90, 0);
-    shape.lineTo(0, 0.55);
-    shape.lineTo(1.90, 0);
+    shape.moveTo(-2.18, 0);
+    shape.lineTo(-2.18, 0.05);
+    shape.lineTo(0, 0.54);
+    shape.lineTo(2.18, 0.05);
+    shape.lineTo(2.18, 0);
     shape.closePath();
     return shape;
   }, []);
@@ -166,32 +168,59 @@ function ShelterStructure({
         <meshStandardMaterial color={wallColor} roughness={0.75} />
       </mesh>
 
-      {/* Door */}
-      <mesh position={[-0.9, 1.05, 2.05]} castShadow receiveShadow>
-        <boxGeometry args={[0.9, 1.9, 0.12]} />
-        <meshStandardMaterial color="#5C3B1E" roughness={0.65} />
-      </mesh>
-      <mesh position={[-0.9, 2.25, 2.05]} castShadow receiveShadow>
-        <boxGeometry args={[0.9, 0.5, 0.3]} />
+      {/* Architectural Entrance Door (Timber with dark bronze frame and handle) */}
+      <group position={[-0.9, 1.15, 2.05]}>
+        {/* Door Casing / Frame */}
+        <mesh position={[0, 0, 0.02]}>
+          <boxGeometry args={[0.96, 2.02, 0.14]} />
+          <meshStandardMaterial color="#1E293B" metalness={0.8} roughness={0.3} />
+        </mesh>
+        {/* Door Leaf */}
+        <mesh position={[0, 0, 0.04]} castShadow receiveShadow>
+          <boxGeometry args={[0.88, 1.94, 0.08]} />
+          <meshStandardMaterial color="#5C3B1E" roughness={0.65} />
+        </mesh>
+        {/* Bronze Kickplate */}
+        <mesh position={[0, -0.84, 0.09]}>
+          <boxGeometry args={[0.84, 0.18, 0.02]} />
+          <meshStandardMaterial color="#78350F" metalness={0.7} roughness={0.3} />
+        </mesh>
+        {/* Handle */}
+        <mesh position={[0.35, 0, 0.11]}>
+          <cylinderGeometry args={[0.015, 0.015, 0.28, 8]} />
+          <meshStandardMaterial color="#E2E8F0" metalness={0.9} roughness={0.15} />
+        </mesh>
+      </group>
+      {/* Door Lintel */}
+      <mesh position={[-0.9, 2.35, 2.05]} castShadow receiveShadow>
+        <boxGeometry args={[0.96, 0.40, 0.3]} />
         <meshStandardMaterial color={wallColor} roughness={0.75} />
       </mesh>
 
-      {/* Window Sill & Lintel */}
-      <mesh position={[0.7, 0.55, 2.05]} castShadow receiveShadow>
-        <boxGeometry args={[1.3 * wwrScale, 0.8, 0.3]} />
+      {/* Center Window Aperture with Architectural Frame, Mullion and Sill Ledge */}
+      {/* Sill and Lintel */}
+      <mesh position={[0.7, 0.525, 2.05]} castShadow receiveShadow>
+        <boxGeometry args={[1.3 * wwrScale, 0.75, 0.3]} />
         <meshStandardMaterial color={wallColor} roughness={0.75} />
       </mesh>
-      <mesh position={[0.7, 2.25, 2.05]} castShadow receiveShadow>
-        <boxGeometry args={[1.3 * wwrScale, 0.5, 0.3]} />
+      <mesh position={[0.7, 2.275, 2.05]} castShadow receiveShadow>
+        <boxGeometry args={[1.3 * wwrScale, 0.55, 0.3]} />
         <meshStandardMaterial color={wallColor} roughness={0.75} />
       </mesh>
 
-      {/* Window Frame and Glazing */}
-      <mesh position={[0.7, 1.4, 2.06]}>
+      {/* Architectural Projected Window Sill Ledge */}
+      <mesh position={[0.7, 0.89, 2.21]} castShadow>
+        <boxGeometry args={[1.3 * wwrScale + 0.12, 0.05, 0.12]} />
+        <meshStandardMaterial color="#CBD5E1" roughness={0.65} />
+      </mesh>
+
+      {/* Window Frame (Dark Bronze Aluminum) */}
+      <mesh position={[0.7, 1.45, 2.06]}>
         <boxGeometry args={[1.3 * wwrScale + 0.06, 1.1 + 0.06, 0.08]} />
         <meshStandardMaterial color="#1E293B" metalness={0.85} roughness={0.25} />
       </mesh>
-      <mesh position={[0.7, 1.4, 2.07]}>
+      {/* Translucent Double Glazing */}
+      <mesh position={[0.7, 1.45, 2.07]}>
         <boxGeometry args={[1.3 * wwrScale, 1.1, 0.04]} />
         <meshPhysicalMaterial
           color="#38BDF8"
@@ -202,19 +231,48 @@ function ShelterStructure({
           opacity={0.8}
         />
       </mesh>
+      {/* Architectural Vertical Window Mullion Bar */}
+      <mesh position={[0.7, 1.45, 2.10]}>
+        <boxGeometry args={[0.035, 1.08, 0.04]} />
+        <meshStandardMaterial color="#1E293B" metalness={0.85} roughness={0.25} />
+      </mesh>
 
-      {/* Shading Overhang (Chajja) */}
-      <group position={[0.7, 2.05, 2.1 + overhangDepth * 0.4]}>
-        <mesh castShadow receiveShadow>
-          <boxGeometry args={[1.6 * wwrScale, 0.08, overhangDepth * 0.8]} />
-          <meshStandardMaterial color="#475569" roughness={0.4} />
-        </mesh>
-        {[-0.6 * wwrScale, 0.6 * wwrScale].map((x, i) => (
-          <mesh key={i} position={[x, -0.15, -overhangDepth * 0.2]} rotation={[0.4, 0, 0]}>
-            <boxGeometry args={[0.04, 0.35, 0.04]} />
-            <meshStandardMaterial color="#334155" metalness={0.7} />
+      {/* Climate-Adaptive Horizontal Shading Brise-Soleil */}
+      <group position={[0.7, 2.05, 2.20]}>
+        {/* Side Structural Outrigger Cantilever Arms */}
+        {[-0.65 * wwrScale - 0.08, 0.65 * wwrScale + 0.08].map((x, i) => (
+          <group key={i} position={[x, 0, 0]}>
+            {/* Horizontal Cantilever Arm */}
+            <mesh position={[0, 0, overhangDepth * 0.45]} castShadow>
+              <boxGeometry args={[0.04, 0.06, overhangDepth * 0.9]} />
+              <meshStandardMaterial color="#334155" metalness={0.8} roughness={0.3} />
+            </mesh>
+            {/* 45-degree Diagonal Support Strut to Wall */}
+            <mesh position={[0, -0.16, overhangDepth * 0.35]} rotation={[0.45, 0, 0]} castShadow>
+              <boxGeometry args={[0.035, 0.38, 0.035]} />
+              <meshStandardMaterial color="#334155" metalness={0.8} roughness={0.3} />
+            </mesh>
+          </group>
+        ))}
+
+        {/* Multi-Blade Horizontal Aerodynamic Shading Louvers */}
+        {[0.25, 0.55, 0.85].map((ratio, i) => (
+          <mesh
+            key={i}
+            position={[0, 0, overhangDepth * ratio]}
+            rotation={[-0.18, 0, 0]}
+            castShadow
+          >
+            <boxGeometry args={[1.3 * wwrScale + 0.16, 0.02, overhangDepth * 0.28]} />
+            <meshStandardMaterial color="#475569" metalness={0.5} roughness={0.4} />
           </mesh>
         ))}
+
+        {/* Front Structural Tie/Fascia Bar */}
+        <mesh position={[0, 0.01, overhangDepth * 0.9]} castShadow>
+          <boxGeometry args={[1.3 * wwrScale + 0.22, 0.04, 0.04]} />
+          <meshStandardMaterial color="#1E293B" metalness={0.85} roughness={0.25} />
+        </mesh>
       </group>
 
       {/* 3. DYNAMIC ARCHITECTURAL ROOF ARCHETYPES (Sit correctly on wall tops at y=2.55) */}
@@ -222,14 +280,14 @@ function ShelterStructure({
         <group position={[0, 2.55, 0]}>
           {/* 1. Interior Horizontal Ceiling Slab / Tie-Beam Deck (Faces down toward living space) */}
           <mesh position={[0, 0.04, 0]} receiveShadow>
-            <boxGeometry args={[6.08, 0.08, 4.3]} />
+            <boxGeometry args={[6.04, 0.08, 4.36]} />
             <meshStandardMaterial color="#EAE6DF" roughness={0.8} />
           </mesh>
 
           {/* 2. Exposed Structural Timber Wall Plates & Cross Tie-Beams */}
           {[-2.4, -1.2, 0, 1.2, 2.4].map((x, i) => (
-            <mesh key={i} position={[x, 0.12, 0]} castShadow>
-              <boxGeometry args={[0.08, 0.09, 4.4]} />
+            <mesh key={i} position={[x, 0.10, 0]} castShadow>
+              <boxGeometry args={[0.08, 0.08, 4.36]} />
               <meshStandardMaterial color="#5C3B1E" roughness={0.7} />
             </mesh>
           ))}
@@ -244,40 +302,85 @@ function ShelterStructure({
             <meshStandardMaterial color={wallColor} roughness={0.75} />
           </mesh>
           {/* Gable Central Attic Cross-Ventilation Grilles */}
-          <mesh position={[2.99, 0.32, 0]}>
-            <boxGeometry args={[0.04, 0.18, 0.44]} />
+          <mesh position={[2.99, 0.34, 0]}>
+            <boxGeometry args={[0.04, 0.16, 0.44]} />
             <meshStandardMaterial color="#334155" roughness={0.6} />
           </mesh>
-          <mesh position={[-2.99, 0.32, 0]}>
-            <boxGeometry args={[0.04, 0.18, 0.44]} />
+          <mesh position={[-2.99, 0.34, 0]}>
+            <boxGeometry args={[0.04, 0.16, 0.44]} />
             <meshStandardMaterial color="#334155" roughness={0.6} />
           </mesh>
 
-          {/* 4. Double-Skin Ventilated Air Cavity & Radiant Barrier Sub-Deck */}
-          <mesh position={[0, 0.38, -1.15]} rotation={[-0.22, 0, 0]}>
-            <boxGeometry args={[6.5, 0.02, 2.45]} />
-            <meshStandardMaterial color="#94A3B8" metalness={0.8} roughness={0.25} />
+          {/* 4. Structural Sloping Timber Rafters (Support framing beneath the deck) */}
+          {[-2.4, -1.2, 0, 1.2, 2.4].map((x, i) => (
+            <React.Fragment key={`rafter-${i}`}>
+              <mesh position={[x, 0.28, -1.16]} rotation={[-0.22, 0, 0]} castShadow>
+                <boxGeometry args={[0.06, 0.06, 2.36]} />
+                <meshStandardMaterial color="#6A4A28" roughness={0.7} />
+              </mesh>
+              <mesh position={[x, 0.28, 1.16]} rotation={[0.22, 0, 0]} castShadow>
+                <boxGeometry args={[0.06, 0.06, 2.36]} />
+                <meshStandardMaterial color="#6A4A28" roughness={0.7} />
+              </mesh>
+            </React.Fragment>
+          ))}
+
+          {/* 5. Double-Skin Secondary Roof: Thermal Radiant Sub-Deck / Sarking Board */}
+          {/* Sits right on rafters; clearly visible from below eave overhang */}
+          <mesh position={[0, 0.33, -1.16]} rotation={[-0.22, 0, 0]}>
+            <boxGeometry args={[6.26, 0.03, 2.36]} />
+            <meshStandardMaterial color="#94A3B8" metalness={0.75} roughness={0.3} />
           </mesh>
-          <mesh position={[0, 0.38, 1.15]} rotation={[0.22, 0, 0]}>
-            <boxGeometry args={[6.5, 0.02, 2.45]} />
-            <meshStandardMaterial color="#94A3B8" metalness={0.8} roughness={0.25} />
+          <mesh position={[0, 0.33, 1.16]} rotation={[0.22, 0, 0]}>
+            <boxGeometry args={[6.26, 0.03, 2.36]} />
+            <meshStandardMaterial color="#94A3B8" metalness={0.75} roughness={0.3} />
           </mesh>
 
-          {/* 5. Exterior Sloped Roof Planes (Sloping DOWN from Ridge to Eaves) */}
+          {/* 6. Double-Skin Ventilated Air Cavity: Spacer Battens Creating Stack-Effect Airflow */}
+          {[-2.4, -1.2, 0, 1.2, 2.4].map((x, i) => (
+            <React.Fragment key={`batten-${i}`}>
+              <mesh position={[x, 0.365, -1.16]} rotation={[-0.22, 0, 0]}>
+                <boxGeometry args={[0.04, 0.04, 2.36]} />
+                <meshStandardMaterial color="#4A3525" roughness={0.7} />
+              </mesh>
+              <mesh position={[x, 0.365, 1.16]} rotation={[0.22, 0, 0]}>
+                <boxGeometry args={[0.04, 0.04, 2.36]} />
+                <meshStandardMaterial color="#4A3525" roughness={0.7} />
+              </mesh>
+            </React.Fragment>
+          ))}
+
+          {/* 7. Exterior Primary Roof Planes: Sloped Terracotta Tiles on Top */}
           {/* North Roof Plane (Slopes down towards north eaves) */}
-          <mesh position={[0, 0.44, -1.15]} rotation={[-0.22, 0, 0]} castShadow receiveShadow>
-            <boxGeometry args={[6.6, 0.11, 2.52]} />
+          <mesh position={[0, 0.42, -1.16]} rotation={[-0.22, 0, 0]} castShadow receiveShadow>
+            <boxGeometry args={[6.36, 0.07, 2.42]} />
             <meshStandardMaterial color={roofColor} roughness={0.55} />
           </mesh>
           {/* South Roof Plane (Slopes down towards south eaves) */}
-          <mesh position={[0, 0.44, 1.15]} rotation={[0.22, 0, 0]} castShadow receiveShadow>
-            <boxGeometry args={[6.6, 0.11, 2.52]} />
+          <mesh position={[0, 0.42, 1.16]} rotation={[0.22, 0, 0]} castShadow receiveShadow>
+            <boxGeometry args={[6.36, 0.07, 2.42]} />
             <meshStandardMaterial color={roofColor} roughness={0.55} />
           </mesh>
 
-          {/* 6. Continuous Ventilated Ridge Cap Sealing the Apex */}
-          <mesh position={[0, 0.72, 0]} castShadow>
-            <boxGeometry args={[6.64, 0.08, 0.38]} />
+          {/* Eaves Fascia Board Trim along North and South Drip Edges */}
+          <mesh position={[0, 0.16, -2.34]} rotation={[-0.22, 0, 0]}>
+            <boxGeometry args={[6.36, 0.06, 0.03]} />
+            <meshStandardMaterial color="#78350F" roughness={0.65} />
+          </mesh>
+          <mesh position={[0, 0.16, 2.34]} rotation={[0.22, 0, 0]}>
+            <boxGeometry args={[6.36, 0.06, 0.03]} />
+            <meshStandardMaterial color="#78350F" roughness={0.65} />
+          </mesh>
+
+          {/* 8. Continuous Aerodynamic Ventilated Ridge Cap Sealing the Apex */}
+          {/* Ventilation shadow reveal underneath */}
+          <mesh position={[0, 0.67, 0]}>
+            <boxGeometry args={[6.36, 0.03, 0.28]} />
+            <meshStandardMaterial color="#0F172A" roughness={0.9} />
+          </mesh>
+          {/* Ridge Cap */}
+          <mesh position={[0, 0.71, 0]} castShadow>
+            <boxGeometry args={[6.40, 0.07, 0.36]} />
             <meshStandardMaterial color="#334155" roughness={0.5} />
           </mesh>
         </group>
