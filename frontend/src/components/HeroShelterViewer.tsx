@@ -244,26 +244,31 @@ function BioclimaticVilla({ showLabels }: { showLabels: boolean }) {
 
       {/* Sloped Double-Skin Terracotta Roof with Exposed Rafters */}
       <group position={[0, 2.4, 0]}>
+        {/* Interior Horizontal Ceiling Slab */}
+        <mesh position={[0, 0.04, 0]} receiveShadow>
+          <boxGeometry args={[5.6, 0.08, 3.8]} />
+          <meshStandardMaterial color="#EAE6DF" roughness={0.8} />
+        </mesh>
         {/* Structural Timber Rafters */}
         {[-2.2, -1.1, 0, 1.1, 2.2].map((x, i) => (
-          <mesh key={i} position={[x, 0.15, 0]} castShadow>
-            <boxGeometry args={[0.08, 0.16, 4.8]} />
+          <mesh key={i} position={[x, 0.12, 0]} castShadow>
+            <boxGeometry args={[0.08, 0.10, 4.4]} />
             <meshStandardMaterial color="#5C3B1E" roughness={0.7} />
           </mesh>
         ))}
-        {/* South Roof Plane (Sloped Terracotta) */}
-        <mesh position={[0, 0.4, 1.15]} rotation={[-0.22, 0, 0]} castShadow receiveShadow>
+        {/* South Roof Plane (Slopes DOWN from ridge to south eaves) */}
+        <mesh position={[0, 0.4, 1.15]} rotation={[0.22, 0, 0]} castShadow receiveShadow>
           <boxGeometry args={[6.2, 0.12, 2.5]} />
           <meshStandardMaterial color="#C85A32" roughness={0.55} />
         </mesh>
-        {/* North Roof Plane */}
-        <mesh position={[0, 0.4, -1.15]} rotation={[0.22, 0, 0]} castShadow receiveShadow>
+        {/* North Roof Plane (Slopes DOWN from ridge to north eaves) */}
+        <mesh position={[0, 0.4, -1.15]} rotation={[-0.22, 0, 0]} castShadow receiveShadow>
           <boxGeometry args={[6.2, 0.12, 2.5]} />
           <meshStandardMaterial color="#C85A32" roughness={0.55} />
         </mesh>
         {/* Continuous Ridge Aerodynamic Ventilator */}
-        <mesh position={[0, 0.7, 0]} castShadow>
-          <boxGeometry args={[6.0, 0.1, 0.4]} />
+        <mesh position={[0, 0.68, 0]} castShadow>
+          <boxGeometry args={[6.24, 0.08, 0.38]} />
           <meshStandardMaterial color="#334155" roughness={0.5} />
         </mesh>
       </group>
@@ -445,12 +450,12 @@ function VernacularGableShelter({ showLabels }: { showLabels: boolean }) {
       </mesh>
 
       {/* Steep Gable Roof (South-facing slope covering veranda) */}
-      <mesh position={[0, 2.7, 0.65]} rotation={[-0.42, 0, 0]} castShadow receiveShadow>
+      <mesh position={[0, 2.7, 0.65]} rotation={[0.42, 0, 0]} castShadow receiveShadow>
         <boxGeometry args={[6.6, 0.1, 3.2]} />
         <meshStandardMaterial color="#A24936" roughness={0.6} />
       </mesh>
       {/* North-facing slope */}
-      <mesh position={[0, 2.7, -1.45]} rotation={[0.42, 0, 0]} castShadow receiveShadow>
+      <mesh position={[0, 2.7, -1.45]} rotation={[-0.42, 0, 0]} castShadow receiveShadow>
         <boxGeometry args={[6.6, 0.1, 3.2]} />
         <meshStandardMaterial color="#A24936" roughness={0.6} />
       </mesh>

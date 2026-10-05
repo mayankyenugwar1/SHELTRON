@@ -97,6 +97,16 @@ function ShelterStructure({
   const roofColor = getRoofColor();
   const rad = (params.orientation_deg * Math.PI) / 180;
 
+  // Triangular gable pediment matching roof pitch (no corner protrusion)
+  const gableShape = React.useMemo(() => {
+    const shape = new THREE.Shape();
+    shape.moveTo(-1.90, 0);
+    shape.lineTo(0, 0.55);
+    shape.lineTo(1.90, 0);
+    shape.closePath();
+    return shape;
+  }, []);
+
   const wwrScale = Math.min(2.0, Math.max(0.7, params.window_to_wall_ratio_pct / 18));
   const overhangDepth = Math.max(0.3, params.shading_overhang_m);
   const isSloped = params.roof_type.includes("Sloped") || params.roof_material.includes("Terracotta");
@@ -207,48 +217,116 @@ function ShelterStructure({
         ))}
       </group>
 
-      {/* 3. Roof Structures */}
+      {/* 3. DYNAMIC ARCHITECTURAL ROOF ARCHETYPES (Sit correctly on wall tops at y=2.55) */}
       {isSloped && (
-        <group position={[0, 2.65, 0]}>
+        <group position={[0, 2.55, 0]}>
+          {/* 1. Interior Horizontal Ceiling Slab / Tie-Beam Deck (Faces down toward living space) */}
+          <mesh position={[0, 0.04, 0]} receiveShadow>
+            <boxGeometry args={[6.08, 0.08, 4.3]} />
+            <meshStandardMaterial color="#EAE6DF" roughness={0.8} />
+          </mesh>
+
+          {/* 2. Exposed Structural Timber Wall Plates & Cross Tie-Beams */}
           {[-2.4, -1.2, 0, 1.2, 2.4].map((x, i) => (
             <mesh key={i} position={[x, 0.12, 0]} castShadow>
-              <boxGeometry args={[0.08, 0.14, 4.8]} />
+              <boxGeometry args={[0.08, 0.09, 4.4]} />
               <meshStandardMaterial color="#5C3B1E" roughness={0.7} />
             </mesh>
           ))}
-          <mesh position={[0, 0.45, -1.15]} rotation={[0.24, 0, 0]} castShadow receiveShadow>
-            <boxGeometry args={[6.6, 0.12, 2.6]} />
+
+          {/* 3. East & West Triangular Gable Enclosure Walls & Attic Cross-Ventilation */}
+          <mesh position={[2.72, 0.08, 0]} rotation={[0, Math.PI / 2, 0]} castShadow receiveShadow>
+            <extrudeGeometry args={[gableShape, { depth: 0.26, bevelEnabled: false }]} />
+            <meshStandardMaterial color={wallColor} roughness={0.75} />
+          </mesh>
+          <mesh position={[-2.98, 0.08, 0]} rotation={[0, Math.PI / 2, 0]} castShadow receiveShadow>
+            <extrudeGeometry args={[gableShape, { depth: 0.26, bevelEnabled: false }]} />
+            <meshStandardMaterial color={wallColor} roughness={0.75} />
+          </mesh>
+          {/* Gable Central Attic Cross-Ventilation Grilles */}
+          <mesh position={[2.99, 0.32, 0]}>
+            <boxGeometry args={[0.04, 0.18, 0.44]} />
+            <meshStandardMaterial color="#334155" roughness={0.6} />
+          </mesh>
+          <mesh position={[-2.99, 0.32, 0]}>
+            <boxGeometry args={[0.04, 0.18, 0.44]} />
+            <meshStandardMaterial color="#334155" roughness={0.6} />
+          </mesh>
+
+          {/* 4. Double-Skin Ventilated Air Cavity & Radiant Barrier Sub-Deck */}
+          <mesh position={[0, 0.38, -1.15]} rotation={[-0.22, 0, 0]}>
+            <boxGeometry args={[6.5, 0.02, 2.45]} />
+            <meshStandardMaterial color="#94A3B8" metalness={0.8} roughness={0.25} />
+          </mesh>
+          <mesh position={[0, 0.38, 1.15]} rotation={[0.22, 0, 0]}>
+            <boxGeometry args={[6.5, 0.02, 2.45]} />
+            <meshStandardMaterial color="#94A3B8" metalness={0.8} roughness={0.25} />
+          </mesh>
+
+          {/* 5. Exterior Sloped Roof Planes (Sloping DOWN from Ridge to Eaves) */}
+          {/* North Roof Plane (Slopes down towards north eaves) */}
+          <mesh position={[0, 0.44, -1.15]} rotation={[-0.22, 0, 0]} castShadow receiveShadow>
+            <boxGeometry args={[6.6, 0.11, 2.52]} />
             <meshStandardMaterial color={roofColor} roughness={0.55} />
           </mesh>
-          <mesh position={[0, 0.45, 1.15]} rotation={[-0.24, 0, 0]} castShadow receiveShadow>
-            <boxGeometry args={[6.6, 0.12, 2.6]} />
+          {/* South Roof Plane (Slopes down towards south eaves) */}
+          <mesh position={[0, 0.44, 1.15]} rotation={[0.22, 0, 0]} castShadow receiveShadow>
+            <boxGeometry args={[6.6, 0.11, 2.52]} />
             <meshStandardMaterial color={roofColor} roughness={0.55} />
           </mesh>
-          <mesh position={[0, 0.78, 0]} castShadow>
-            <boxGeometry args={[6.4, 0.1, 0.35]} />
+
+          {/* 6. Continuous Ventilated Ridge Cap Sealing the Apex */}
+          <mesh position={[0, 0.72, 0]} castShadow>
+            <boxGeometry args={[6.64, 0.08, 0.38]} />
             <meshStandardMaterial color="#334155" roughness={0.5} />
           </mesh>
         </group>
       )}
 
       {isSolarPergola && (
-        <group position={[0, 2.6, 0]}>
-          <mesh position={[0, 0, 0]} castShadow receiveShadow>
-            <boxGeometry args={[6.5, 0.18, 4.5]} />
+        <group position={[0, 2.55, 0]}>
+          {/* Interior Ceiling Slab */}
+          <mesh position={[0, 0.04, 0]} receiveShadow>
+            <boxGeometry args={[6.08, 0.08, 4.3]} />
+            <meshStandardMaterial color="#EAE6DF" roughness={0.8} />
+          </mesh>
+          {/* High-Albedo Cool Roof Base with Parapet Edge */}
+          <mesh position={[0, 0.12, 0]} castShadow receiveShadow>
+            <boxGeometry args={[6.6, 0.14, 4.6]} />
             <meshStandardMaterial color="#F8FAFC" roughness={0.35} />
           </mesh>
+          {/* Low Perimeter Parapet Curb */}
+          <mesh position={[0, 0.24, 2.22]}>
+            <boxGeometry args={[6.6, 0.14, 0.16]} />
+            <meshStandardMaterial color="#94A3B8" roughness={0.6} />
+          </mesh>
+          <mesh position={[0, 0.24, -2.22]}>
+            <boxGeometry args={[6.6, 0.14, 0.16]} />
+            <meshStandardMaterial color="#94A3B8" roughness={0.6} />
+          </mesh>
+          <mesh position={[3.22, 0.24, 0]}>
+            <boxGeometry args={[0.16, 0.14, 4.3]} />
+            <meshStandardMaterial color="#94A3B8" roughness={0.6} />
+          </mesh>
+          <mesh position={[-3.22, 0.24, 0]}>
+            <boxGeometry args={[0.16, 0.14, 4.3]} />
+            <meshStandardMaterial color="#94A3B8" roughness={0.6} />
+          </mesh>
+
+          {/* Elevated Steel Pergola Frame */}
           {[
             [-2.6, 1.8],
             [2.6, 1.8],
             [-2.6, -1.8],
             [2.6, -1.8]
           ].map(([x, z], i) => (
-            <mesh key={i} position={[x, 0.5, z]} castShadow>
+            <mesh key={i} position={[x, 0.6, z]} castShadow>
               <cylinderGeometry args={[0.04, 0.04, 0.8, 8]} />
               <meshStandardMaterial color="#334155" metalness={0.9} roughness={0.3} />
             </mesh>
           ))}
-          <group position={[0, 0.95, 0]} rotation={[-0.06, 0, 0]}>
+          {/* Photovoltaic Solar Panels */}
+          <group position={[0, 1.05, 0]} rotation={[-0.06, 0, 0]}>
             {[-1.8, -0.6, 0.6, 1.8].map((x, i) =>
               [-1.0, 1.0].map((z, j) => (
                 <mesh key={`${i}-${j}`} position={[x, 0, z]} castShadow>
@@ -262,20 +340,41 @@ function ShelterStructure({
       )}
 
       {isGreenRoof && (
-        <group position={[0, 2.6, 0]}>
-          <mesh position={[0, 0, 0]} castShadow receiveShadow>
-            <boxGeometry args={[6.6, 0.22, 4.6]} />
+        <group position={[0, 2.55, 0]}>
+          {/* Interior Ceiling Slab */}
+          <mesh position={[0, 0.04, 0]} receiveShadow>
+            <boxGeometry args={[6.08, 0.08, 4.3]} />
+            <meshStandardMaterial color="#EAE6DF" roughness={0.8} />
+          </mesh>
+          {/* Roof Structural Deck */}
+          <mesh position={[0, 0.12, 0]} castShadow receiveShadow>
+            <boxGeometry args={[6.6, 0.14, 4.6]} />
             <meshStandardMaterial color="#475569" roughness={0.7} />
           </mesh>
-          <mesh position={[0, 0.14, 0]} castShadow>
-            <boxGeometry args={[6.3, 0.12, 4.3]} />
+          {/* Living Sedum Vegetated Grass Layer */}
+          <mesh position={[0, 0.22, 0]} castShadow>
+            <boxGeometry args={[6.3, 0.10, 4.3]} />
             <meshStandardMaterial color="#3A5A40" roughness={0.9} />
+          </mesh>
+          {/* Gravel Ballast Drainage Edge */}
+          <mesh position={[0, 0.20, 2.22]}>
+            <boxGeometry args={[6.6, 0.08, 0.18]} />
+            <meshStandardMaterial color="#94A3B8" roughness={0.95} />
+          </mesh>
+          <mesh position={[0, 0.20, -2.22]}>
+            <boxGeometry args={[6.6, 0.08, 0.18]} />
+            <meshStandardMaterial color="#94A3B8" roughness={0.95} />
           </mesh>
         </group>
       )}
 
       {isVaulted && (
-        <group position={[0, 2.5, 0]}>
+        <group position={[0, 2.55, 0]}>
+          {/* Interior Ceiling / Tie-Beam Base */}
+          <mesh position={[0, 0.04, 0]} receiveShadow>
+            <boxGeometry args={[6.08, 0.08, 4.3]} />
+            <meshStandardMaterial color="#EAE6DF" roughness={0.8} />
+          </mesh>
           <mesh position={[0, 0.7, 0]} rotation={[0, 0, Math.PI / 2]} castShadow receiveShadow>
             <cylinderGeometry args={[1.8, 1.8, 5.8, 32, 1, false, 0, Math.PI]} />
             <meshStandardMaterial color="#556B2F" roughness={0.55} side={THREE.DoubleSide} />
@@ -284,26 +383,40 @@ function ShelterStructure({
       )}
 
       {isButterfly && (
-        <group position={[0, 2.6, 0]}>
+        <group position={[0, 2.55, 0]}>
+          {/* Interior Ceiling Slab */}
+          <mesh position={[0, 0.04, 0]} receiveShadow>
+            <boxGeometry args={[6.08, 0.08, 4.3]} />
+            <meshStandardMaterial color="#EAE6DF" roughness={0.8} />
+          </mesh>
+          {/* Left Wing (Slopes down inward to central valley gutter) */}
           <mesh position={[-1.7, 0.35, 0]} rotation={[0, 0, -0.22]} castShadow receiveShadow>
             <boxGeometry args={[3.5, 0.12, 4.8]} />
             <meshStandardMaterial color="#3E6B5C" roughness={0.5} />
           </mesh>
+          {/* Right Wing (Slopes down inward to central valley gutter) */}
           <mesh position={[1.7, 0.35, 0]} rotation={[0, 0, 0.22]} castShadow receiveShadow>
             <boxGeometry args={[3.5, 0.12, 4.8]} />
             <meshStandardMaterial color="#3E6B5C" roughness={0.5} />
           </mesh>
-          <mesh position={[0, -0.05, 0]} castShadow>
-            <boxGeometry args={[0.4, 0.15, 4.9]} />
+          {/* Central Valley Rainwater Gutter */}
+          <mesh position={[0, 0.08, 0]} castShadow>
+            <boxGeometry args={[0.4, 0.12, 4.9]} />
             <meshStandardMaterial color="#1E293B" metalness={0.7} />
           </mesh>
         </group>
       )}
 
+      {/* Fallback standard flat roof if none matched */}
       {!isSloped && !isSolarPergola && !isGreenRoof && !isVaulted && !isButterfly && (
-        <group position={[0, 2.6, 0]}>
-          <mesh position={[0, 0, 0]} castShadow receiveShadow>
-            <boxGeometry args={[6.6, 0.22, 4.6]} />
+        <group position={[0, 2.55, 0]}>
+          {/* Interior Ceiling Slab */}
+          <mesh position={[0, 0.04, 0]} receiveShadow>
+            <boxGeometry args={[6.08, 0.08, 4.3]} />
+            <meshStandardMaterial color="#EAE6DF" roughness={0.8} />
+          </mesh>
+          <mesh position={[0, 0.12, 0]} castShadow receiveShadow>
+            <boxGeometry args={[6.6, 0.14, 4.6]} />
             <meshStandardMaterial color={roofColor} roughness={0.6} />
           </mesh>
         </group>
